@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String?
+  createdAt DateTime  @default(now())
+  watchProgress WatchProgress[]
+  viewLogs      ViewLog[]
+  playbackMetrics PlaybackMetric[]
+}
+
+model Video {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  thumbnail   String
+  videoUrl    String
+  duration    Int
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  watchProgress WatchProgress[]
+  viewLogs      ViewLog[]
+  playbackMetrics PlaybackMetric[]
+}
+
+model Category {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  videos Video[]
+}
+
+model ViewLog {
+  id        String   @id @default(uuid())
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   String
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  createdAt DateTime @default(now())
+}
+
+model WatchProgress {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   String
+  progress  Int
+  updatedAt DateTime @default(now())
+
+  @@unique([userId, videoId])
+}
+
+enum EventType {
+  HEARTBEAT
+  BUFFERING
+  ERROR
+}
+
+model PlaybackMetric {
+  id          String    @default(uuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  video       Video     @relation(fields: [videoId], references: [id])
+  videoId     String
+  bitrate     Int
+  bufferLevel Float
+  eventType   EventType
+  timestamp   DateTime  @default(now())
+
+  @@id([id, timestamp])
+}
