@@ -19,5 +19,5 @@ This project strictly follows a **Spec-Driven Workflow**. Every implementation s
 ## LIMITATIONS
 - **No Unsolicited Features**: Do not add extra "nice-to-have" features unless they are requested or documented in the specs.
 - **Scope Awareness**: Always check the "In Scope" and "Out of Scope" sections in `project-overview.md` before starting work.
-- **Database Consistency**: Use only the designated database (SQLite) and ORM (Drizzle) as defined in the stack.
+- **Database Consistency**: Use only the designated database (PostgreSQL) and ORM (Prisma) as defined in the stack.
 - **Progress Tracking**: Always update `progress-tracker.md` after every task completion or significant project update.

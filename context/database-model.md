@@ -48,13 +48,14 @@ Event-based table to track views without locking the `Video` table.
 High-volume telemetry data for monitoring Quality of Experience (QoE).
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
-| `id` | `String` | PK, UUID | Record identifier. |
+| `id` | `String` | UUID | Record identifier. |
 | `userId` | `String` | FK | The user. |
 | `videoId` | `String` | FK | The video. |
 | `bitrate` | `Int` | Not Null | Current streaming bitrate in kbps. |
 | `bufferLevel`| `Float` | Not Null | Buffer health in seconds. |
 | `eventType` | `Enum` | Not Null | `HEARTBEAT`, `BUFFERING`, `ERROR`. |
-| `timestamp` | `DateTime` | PK (Part), Default `now()` | Event time (used for partitioning). |
+| `timestamp` | `DateTime` | Default `now()` | Event time (used for partitioning). |
+| **Primary Key** | `Composite` | `(id, timestamp)` | Required for PostgreSQL range partitioning. |
 
 ---
 

@@ -14,27 +14,25 @@ The application follows a high-performance, full-stack monorepo architecture. It
 - **Framework**: React 19 (Client-side rendering for responsiveness).
 - **Bundler**: Vite.
 - **Styling**: Tailwind CSS v4.
-- **Video Player**: Custom implementation using native `<video>` API or specialized libraries (e.g., Video.js / Shaka Player) to support **HLS/DASH** and adaptive bitrate.
-- **State Management**:
-    - **Server State**: TanStack Query.
-    - **Client State**: Zustand / React Context.
+- **Video Player**: Custom implementation using **Shaka Player** or **hls.js**. 
+    - **Reasoning**: Native `<video>` tag does not support HLS/DASH in most desktop browsers (Chrome, Firefox). These libraries provide the necessary Media Source Extensions (MSE) polyfills.
+- **Adaptive Bitrate**: Managed by the player library based on network conditions.
 
 ### 2. Backend Layer (Server-Side)
 - **Runtime**: Node.js + TypeScript.
-- **Framework**: **Fastify** (Chosen for low overhead and superior performance).
-- **Logging**: **Pino** (High-speed, non-blocking JSON logging).
-- **Streaming Logic**: 
-    - **Native Streams**: Direct use of `fs.createReadStream` piped to Fastify response.
-    - **Backpressure Handling**: Automatic flow control to prevent memory overflow.
-    - **Partial Content**: Full support for RFC 7233 (HTTP 206) via Range headers for seamless seeking.
-- **Validation**: Zod (Shared with frontend).
+- **Framework**: **Fastify**.
+- **Streaming Logic**:
+    - **MVP (Progressive)**: Serving single MP4 files using `fs.createReadStream` with **Range Header** support (HTTP 206) via `fastify-static` or custom stream piping.
+    - **Production (Segmented)**: Serving static `.m3u8` manifests and `.ts` / `.m4s` segments. 
+    - **Backpressure**: Essential for progressive streaming to prevent Node.js process memory spikes.
 
 ### 3. Video Processing & Adaptive Bitrate (ABR)
-- **Strategy**: Transitioning from single-file MP4 streaming to **HLS (HTTP Live Streaming)** or **MPEG-DASH**.
-- **Encoding**: 
-    - **FFmpeg**: For segmenting and multi-resolution transcoding.
-    - **Per-Title Optimization**: (Future) Optimizing bitrates based on content complexity.
-- **Packaging**: Segments (.ts / .m4s) served as static assets with low-latency headers.
+- **Strategy**: Offline transcoding for the MVP.
+- **Tooling**: FFmpeg for generating multi-resolution ladders (360p, 720p, 1080p) and segmenting.
+- **Separation of Concerns**: 
+    - **API Server**: Handles metadata and serves segments.
+    - **Worker Node (Future)**: Dedicated high-CPU instances for FFmpeg transcoding to prevent API latency.
+- **Packaging**: Segments served with aggressive caching headers (`Cache-Control: public, max-age=31536000`).
 
 ### 4. Database Layer (Persistence)
 - **Database**: PostgreSQL.

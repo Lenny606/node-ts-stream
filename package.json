@@ -1,0 +1,21 @@
+{
+  "name": "node-ts-stream",
+  "private": true,
+  "description": "High-performance video streaming platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "tsx": "^4.19.2",
+    "prettier": "^3.4.2",
+    "eslint": "^9.18.0"
+  }
+}
