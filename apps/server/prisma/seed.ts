@@ -54,7 +54,7 @@ async function main() {
         title: 'Big Buck Bunny',
         description: 'A large, lovable rabbit is poked and prodded by three mischievous rodents.',
         thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_Buck_Bunny_Main_Characters.jpg',
-        videoUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        videoUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample2/BigBuckBunny.mp4',
         duration: 596,
         categoryId: scifi.id,
       },

@@ -24,7 +24,7 @@ describe('App Component', () => {
     await waitFor(() => {
       expect(screen.getByText('OPERATIONAL')).toBeInTheDocument();
     });
-    
+
     expect(screen.getByText(/Live Telemetry/i)).toBeInTheDocument();
     expect(screen.getByText(/"message": "pong"/i)).toBeInTheDocument();
   });
@@ -56,8 +56,8 @@ describe('App Component', () => {
     fireEvent.click(button);
 
     expect(screen.getByText('Hide Test Stream')).toBeInTheDocument();
-    expect(screen.getByText(/Test Stream: sample.mp4/i)).toBeInTheDocument();
-    
+    expect(screen.getByText(/Test Stream: sample2.mp4/i)).toBeInTheDocument();
+
     const video = document.querySelector('video');
     expect(video).toBeInTheDocument();
     expect(video?.src).toContain('/api/v1/videos/test-id/stream');
