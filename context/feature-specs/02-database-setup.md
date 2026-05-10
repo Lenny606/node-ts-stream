@@ -1,4 +1,5 @@
 # FEATURE SPEC 02: DATABASE CONNECTION & SETUP
+READ GEMINI.MD FILE FIRST, THEN PROCEED. 
 
 This document outlines the setup of PostgreSQL with Prisma ORM, covering configuration for both development and production environments.
 
